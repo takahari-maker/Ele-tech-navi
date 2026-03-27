@@ -167,6 +167,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
 .law-thinking-dots span:nth-child(2){animation-delay:.2s}
 .law-thinking-dots span:nth-child(3){animation-delay:.4s}
 @keyframes dotPulse{0%,80%,100%{opacity:.3}40%{opacity:1}}
+
+/* Settings */
+.settings-section{background:#fff;border-radius:var(--rl);border:1px solid var(--gray-100);padding:16px;margin-bottom:12px}
+.settings-label{font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:6px}
+.settings-desc{font-size:12px;color:var(--gray-500);margin-bottom:10px;line-height:1.6}
+.settings-input{width:100%;padding:14px 14px;border:2px solid var(--blue);border-radius:var(--r);font-size:16px;font-family:monospace;outline:none;background:var(--blue-pale);color:var(--gray-800)}
+.settings-input:focus{border-color:var(--blue)}
+.settings-status{margin-top:8px;font-size:12px;padding:6px 10px;border-radius:var(--r)}
+.settings-status.ok{background:var(--green-pale);color:#065f46}
+.settings-status.ng{background:var(--red-pale);color:#991b1b}
+.settings-save{margin-top:12px;padding:14px 24px;background:var(--blue);color:#fff;border:none;border-radius:var(--r);font-size:16px;font-weight:700;cursor:pointer;width:100%}
 </style>
 </head>
 <body>
@@ -226,6 +237,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
   <div class="sidebar-divider"></div>
   <div class="sidebar-section">
     <div class="sidebar-item" onclick="navigate('quiz')"><span class="si-icon">📝</span>知識確認テスト</div>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section">
+    <div class="sidebar-item" onclick="navigate('settings')"><span class="si-icon">⚙️</span>設定</div>
   </div>
 </nav>
 <div class="main"><div class="content" id="mainContent"></div></div>
@@ -367,6 +382,7 @@ function renderPage(page){
     case 'trouble':renderTermPage(mc,'トラブル事例','\u26a0\ufe0f トラブル事例','現場のトラブルと対応');break;
     case 'kaizen':renderKaizenPage(mc);break;
     case 'quiz':renderQuizPage(mc);break;
+    case 'settings':renderSettingsPage(mc);break;
   }
   window.scrollTo(0,0);
 }
@@ -515,6 +531,132 @@ function renderLawChatHistory(lawName){
     }
   }).join('');
   el.scrollTop=el.scrollHeight;
+}
+
+function escMsg(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
+
+
+// Settings page
+function renderSettingsPage(mc){
+  var currentKey=localStorage.getItem('anthropic_api_key')||'';
+  var masked=currentKey?currentKey.substring(0,10)+'...'+ currentKey.substring(currentKey.length-4):'';
+  mc.innerHTML='<div class="page-title">\u2699\ufe0f 設定</div><div class="page-desc">法令AIアシスタント機能の設定</div>'+
+  '<div class="settings-section">'+
+    '<div class="settings-label">Anthropic APIキー</div>'+
+    '<div class="settings-desc">法令AIアシスタント機能を使用するにはAPIキーが必要です。<br>'+
+    'APIキーはこの端末のブラウザにのみ保存され、外部サーバーには送信されません。</div>'+
+    '<div style="font-size:14px;font-weight:700;color:var(--blue);margin-bottom:8px">\u2b07\ufe0f \u4e0b\u306e\u6b04\u306bAPI\u30ad\u30fc\u3092\u8cbc\u308a\u4ed8\u3051\u3066\u304f\u3060\u3055\u3044</div>'+
+    '<input type="text" class="settings-input" id="apiKeyInput" placeholder="\u3053\u3053\u306b\u8cbc\u308a\u4ed8\u3051\uff08sk-ant-api03-...\uff09" value="'+(currentKey||'')+'">'+
+    '<div id="apiKeyStatus">'+(currentKey?'<div class="settings-status ok">\u2705 APIキーが設定されています（'+masked+'）</div>':'')+'</div>'+
+    '<button class="settings-save" onclick="saveApiKey()">保存</button>'+
+  '</div>'+
+  '<div class="settings-section">'+
+    '<div class="settings-label">APIキーの取得方法</div>'+
+    '<div class="settings-desc" style="line-height:2">'+
+      '<strong>1.</strong> <a href="https://console.anthropic.com/" target="_blank" style="color:var(--blue)">console.anthropic.com</a> にアクセス<br>'+
+      '<strong>2.</strong> Googleアカウント等でサインアップ（無料）<br>'+
+      '<strong>3.</strong> 左メニューの「API Keys」をクリック<br>'+
+      '<strong>4.</strong> 「Create Key」でキーを発行<br>'+
+      '<strong>5.</strong> 表示されたキー（sk-ant-...）をコピーして上の欄に貼り付け<br><br>'+
+      '\ud83d\udcb0 <strong>料金：</strong>従量課金制（1回の質問あたり約1〜5円）<br>'+
+      '\u26a0\ufe0f 初回登録時に$5分の無料クレジットが付与されます'+
+    '</div>'+
+  '</div>';
+}
+function saveApiKey(){
+  var key=document.getElementById('apiKeyInput').value.trim();
+  var status=document.getElementById('apiKeyStatus');
+  if(!key){
+    localStorage.removeItem('anthropic_api_key');
+    status.innerHTML='<div class="settings-status ng">\u274c APIキーが削除されました</div>';
+    return;
+  }
+  if(!key.startsWith('sk-')){
+    status.innerHTML='<div class="settings-status ng">\u274c APIキーの形式が正しくありません（sk-で始まる必要があります）</div>';
+    return;
+  }
+  localStorage.setItem('anthropic_api_key',key);
+  var masked=key.substring(0,10)+'...'+key.substring(key.length-4);
+  status.innerHTML='<div class="settings-status ok">\u2705 保存しました（'+masked+'）</div>';
+}
+
+function askLaw(){
+  var apiKey=localStorage.getItem('anthropic_api_key');
+  if(!apiKey){
+    var msgsEl=document.getElementById('lawChatMsgs');
+    lawChatHistory[document.getElementById('lawChatInput').dataset.law||'法令']=lawChatHistory[document.getElementById('lawChatInput').dataset.law||'法令']||[];
+    lawChatHistory[document.getElementById('lawChatInput').dataset.law||'法令'].push({role:'assistant',text:'\u26a0\ufe0f APIキーが設定されていません。\n\n左メニューの「\u2699\ufe0f 設定」からAnthropicのAPIキーを設定してください。'});
+    renderLawChatHistory(document.getElementById('lawChatInput').dataset.law||'法令');
+    return;
+  }
+
+  var input=document.getElementById('lawChatInput');
+  var btn=document.getElementById('lawChatBtn');
+  var question=input.value.trim();
+  if(!question)return;
+
+  var lawName=input.dataset.law||'法令';
+  if(!lawChatHistory[lawName])lawChatHistory[lawName]=[];
+
+  lawChatHistory[lawName].push({role:'user',text:question});
+  input.value='';
+  renderLawChatHistory(lawName);
+
+  var msgsEl=document.getElementById('lawChatMsgs');
+  msgsEl.innerHTML+='<div class="law-thinking" id="lawThinking"><div class="law-msg-icon" style="width:28px;height:28px;border-radius:50%;background:var(--blue-pale);display:flex;align-items:center;justify-content:center;font-size:14px">\ud83e\udd16</div><div class="law-thinking-dots"><span></span><span></span><span></span></div>\u6700\u65b0\u306e\u6761\u6587\u3092\u691c\u7d22\u4e2d...</div>';
+  msgsEl.scrollTop=msgsEl.scrollHeight;
+  btn.disabled=true;
+
+  var apiMessages=[];
+  lawChatHistory[lawName].forEach(function(m){
+    apiMessages.push({role:m.role==='user'?'user':'assistant',content:m.text});
+  });
+
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':apiKey,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1500,
+      system:'あなたは日本の電気工事業界に精通した法令アシスタントです。質問された法令（現在のコンテキスト：'+lawName+'）について、Web検索で最新の条文を確認し、分かりやすく回答してください。\n\n【重要なルール】\n・回答は日本語で行うこと\n・条文を引用する場合は条番号を明記すること\n・回答の最後に必ず「※この回答はAIによる参考情報です。正確な解釈は専門家にご確認ください。」と付けること\n・法改正の可能性がある場合はその旨を言及すること\n・電気工事・建設業の実務に即した具体的な説明を心がけること',
+      messages:apiMessages,
+      tools:[{type:'web_search_20250305',name:'web_search',max_uses:3}]
+    })
+  })
+  .then(function(res){
+    if(!res.ok){
+      return res.json().then(function(err){
+        throw new Error(err.error&&err.error.message?err.error.message:'API error ('+res.status+')');
+      });
+    }
+    return res.json();
+  })
+  .then(function(data){
+    var answer='';
+    if(data.content){
+      data.content.forEach(function(block){
+        if(block.type==='text'&&block.text)answer+=block.text;
+      });
+    }
+    if(!answer)answer='\u56de\u7b54\u3092\u53d6\u5f97\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305f\u3002';
+    lawChatHistory[lawName].push({role:'assistant',text:answer});
+    renderLawChatHistory(lawName);
+    btn.disabled=false;
+  })
+  .catch(function(err){
+    var errMsg=err.message||'\u4e0d\u660e\u306a\u30a8\u30e9\u30fc';
+    if(errMsg.indexOf('API key')>=0||errMsg.indexOf('401')>=0||errMsg.indexOf('authentication')>=0){
+      errMsg='APIキーが無効です。設定ページで正しいキーを入力してください。';
+    }
+    lawChatHistory[lawName].push({role:'assistant',text:'\u30a8\u30e9\u30fc: '+errMsg});
+    renderLawChatHistory(lawName);
+    btn.disabled=false;
+  });
 }
 
 function escMsg(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}

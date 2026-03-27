@@ -306,7 +306,23 @@ KENCHIKU_DATA.forEach(function(t){ALL_ITEMS.push({type:'ken',title:t.t,desc:t.d,
 
 // Navigation
 var currentPage='top',isSearchActive=false;
-function navigate(page){currentPage=page;isSearchActive=false;document.getElementById('globalSearch').value='';document.getElementById('gsClear').classList.remove('show');var items=document.querySelectorAll('.sidebar-item');for(var i=0;i<items.length;i++)items[i].classList.remove('active');if(event&&event.currentTarget)event.currentTarget.classList.add('active');if(window.innerWidth<900)toggleSidebar();renderPage(page);}
+function navigate(page){
+  currentPage=page;isSearchActive=false;
+  document.getElementById('globalSearch').value='';
+  document.getElementById('gsClear').classList.remove('show');
+  // Sync sidebar: find item with matching page and highlight it
+  var items=document.querySelectorAll('.sidebar-item');
+  for(var i=0;i<items.length;i++){
+    items[i].classList.remove('active');
+    var oc=items[i].getAttribute('onclick')||'';
+    if(oc.indexOf("'"+page+"'")>=0) items[i].classList.add('active');
+  }
+  if(window.innerWidth<900){
+    var sb=document.getElementById('sidebar');
+    if(sb.classList.contains('open'))toggleSidebar();
+  }
+  renderPage(page);
+}
 function renderPage(page){
   var mc=document.getElementById('mainContent');
   switch(page){
@@ -405,17 +421,32 @@ function renderSearchResults(raw){
   }).join('')+(hm?'<div style="text-align:center;padding:16px;color:var(--gray-500);font-size:13px">他 '+(results.length-150)+' 件</div>':'');
 }
 
-// Law page - filter by specific law subcategory
+// Law page with e-Gov links
+var EGOV_LINKS={
+  '建設業法':'https://laws.e-gov.go.jp/law/324AC0000000100',
+  '建築基準法':'https://laws.e-gov.go.jp/law/325AC0000000201',
+  '消防法':'https://laws.e-gov.go.jp/law/323AC1000000186',
+  '電気事業法':'https://laws.e-gov.go.jp/law/339AC0000000170',
+  '電気工事士法':'https://laws.e-gov.go.jp/law/335AC0000000139',
+  '電気工事業法':'https://laws.e-gov.go.jp/law/345AC0000000096',
+  '電気用品安全法':'https://laws.e-gov.go.jp/law/336AC0000000234',
+  '労働安全衛生法':'https://laws.e-gov.go.jp/law/347AC0000000057'
+};
 function renderLawPage(mc,lawName){
   var lawData=FAQ_DATA['\u6cd5\u4ee4']||{};
   var items=[];
   if(lawName){
     for(var sc in lawData){if(sc.indexOf(lawName)>=0){lawData[sc].forEach(function(e){items.push(e);});}}
-    mc.innerHTML='<div class="page-title">\ud83d\udcdc '+lawName+'</div><div class="page-desc">'+items.length+'件</div><div id="lawR"></div>';
+    var egovLink=EGOV_LINKS[lawName]||'';
+    var linkHtml=egovLink?'<div style="margin-bottom:14px;padding:12px;background:var(--blue-pale);border-radius:var(--r);border:1px solid var(--blue-light)"><a href="'+egovLink+'" target="_blank" rel="noopener" style="color:var(--blue);font-size:13px;font-weight:600;text-decoration:none">\ud83d\udcdc '+lawName+'の最新条文を見る（e-Gov法令検索） \u2197</a><div style="font-size:11px;color:var(--gray-500);margin-top:4px">※法令は改正される場合があります。最新の条文はe-Gov法令検索で確認してください。</div></div>':'';
+    mc.innerHTML='<div class="page-title">\ud83d\udcdc '+lawName+'</div><div class="page-desc">'+items.length+'件</div>'+linkHtml+'<div id="lawR"></div>';
   } else {
-    var otherCats=['電気工事業法（電気工事業の業務の適正化に関する法律）','電気用品安全法','労働安全衛生法','その他の法令'];
+    var otherLaws=['電気工事業法','電気用品安全法','労働安全衛生法'];
     for(var sc in lawData){var isMain=sc.indexOf('建設業法')>=0||sc.indexOf('建築基準法')>=0||sc.indexOf('消防法')>=0||sc.indexOf('電気事業法')>=0||sc.indexOf('電気工事士法')>=0;if(!isMain){lawData[sc].forEach(function(e){items.push({q:e.q,a:e.a,qd:e.qd,sc:sc});});}}
-    mc.innerHTML='<div class="page-title">\ud83d\udcdc その他法令</div><div class="page-desc">電気工事業法・電気用品安全法・労働安全衛生法 等（'+items.length+'件）</div><div id="lawR"></div>';
+    var linksHtml='<div style="margin-bottom:14px;padding:12px;background:var(--blue-pale);border-radius:var(--r);border:1px solid var(--blue-light)"><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:8px">\ud83d\udcdc 最新条文を確認（e-Gov法令検索）</div>';
+    otherLaws.forEach(function(ln){var link=EGOV_LINKS[ln]||'';if(link)linksHtml+='<a href="'+link+'" target="_blank" rel="noopener" style="display:block;color:var(--blue);font-size:12px;margin-bottom:4px;text-decoration:none">'+ln+' \u2197</a>';});
+    linksHtml+='<div style="font-size:11px;color:var(--gray-500);margin-top:6px">※最新の条文はe-Gov法令検索で確認してください。</div></div>';
+    mc.innerHTML='<div class="page-title">\ud83d\udcdc その他法令</div><div class="page-desc">電気工事業法・電気用品安全法・労働安全衛生法 等（'+items.length+'件）</div>'+linksHtml+'<div id="lawR"></div>';
   }
   if(!items.length){document.getElementById('lawR').innerHTML='<div class="no-results"><p>データ準備中</p></div>';return;}
   document.getElementById('lawR').innerHTML=items.map(function(it,i){

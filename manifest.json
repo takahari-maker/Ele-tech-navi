@@ -1,7 +1,7 @@
 {
-  "name": "電気工事 技術継承ナビ",
-  "short_name": "技術継承ナビ",
-  "description": "電気工事の品質管理ポイントを検索・テストできる技術継承ツール",
+  "name": "なんでもまるわかりサイト",
+  "short_name": "まるわかり",
+  "description": "旭日電気工業 社内ナレッジベース",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#1a2744",

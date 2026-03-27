@@ -12,120 +12,117 @@
 <title>電気工事 技術継承ナビ</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --navy:#1a2744;--blue:#2563eb;--blue-light:#3b82f6;--blue-pale:#eff6ff;
-  --green:#059669;--green-pale:#ecfdf5;--orange:#d97706;--orange-pale:#fffbeb;
-  --red:#dc2626;--red-pale:#fef2f2;
-  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;
-  --gray-400:#9ca3af;--gray-500:#6b7280;--gray-600:#4b5563;--gray-700:#374151;
-  --gray-800:#1f2937;--gray-900:#111827;
-  --shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
-  --shadow-md:0 4px 6px -1px rgba(0,0,0,.1);
-  --shadow-lg:0 10px 15px -3px rgba(0,0,0,.1);
-  --r:8px;--rl:12px;
-  --sidebar-w:280px;
-  --safe-top:env(safe-area-inset-top,0px);
-  --safe-bottom:env(safe-area-inset-bottom,0px)
-}
+:root{--navy:#1a2744;--blue:#2563eb;--blue-light:#3b82f6;--blue-pale:#eff6ff;--green:#059669;--green-pale:#ecfdf5;--orange:#d97706;--orange-pale:#fffbeb;--red:#dc2626;--red-pale:#fef2f2;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-500:#6b7280;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;--shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);--shadow-md:0 4px 6px -1px rgba(0,0,0,.1);--shadow-lg:0 10px 15px -3px rgba(0,0,0,.1);--r:8px;--rl:12px;--sidebar-w:260px;--header-h:108px;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)}
 body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6}
 
-/* Header */
-.header{background:linear-gradient(135deg,var(--navy),#2d4a7a);color:#fff;padding:14px 16px;padding-top:calc(14px + var(--safe-top));position:fixed;top:0;left:0;right:0;z-index:200;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:12px}
-.header h1{font-size:16px;font-weight:700;flex:1}
-.menu-btn{background:none;border:none;color:#fff;font-size:24px;cursor:pointer;padding:4px;-webkit-tap-highlight-color:transparent;display:flex;align-items:center}
+/* === HEADER with search === */
+.header{background:linear-gradient(135deg,var(--navy),#2d4a7a);color:#fff;padding:10px 16px 10px;padding-top:calc(10px + var(--safe-top));position:fixed;top:0;left:0;right:0;z-index:200;box-shadow:var(--shadow-lg)}
+.header-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.header h1{font-size:15px;font-weight:700;flex:1;white-space:nowrap}
+.menu-btn{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:2px;display:flex;align-items:center}
 .header-status{font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.8)}
+.header-search{position:relative}
+.header-search input{width:100%;padding:10px 36px 10px 36px;border:none;border-radius:var(--r);font-size:15px;background:rgba(255,255,255,.15);color:#fff;outline:none;-webkit-appearance:none;transition:background .2s}
+.header-search input::placeholder{color:rgba(255,255,255,.5)}
+.header-search input:focus{background:rgba(255,255,255,.95);color:var(--gray-800)}
+.header-search input:focus::placeholder{color:var(--gray-400)}
+.header-search .hs-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:16px;color:rgba(255,255,255,.5);pointer-events:none}
+.header-search input:focus~.hs-icon{color:var(--gray-400)}
+.header-search .hs-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:16px;color:rgba(255,255,255,.4);cursor:pointer;display:none;background:none;border:none}
+.header-search .hs-clear.show{display:block}
+.header-search input:focus~.hs-clear{color:var(--gray-400)}
 
-/* Sidebar */
+/* === SIDEBAR === */
 .sidebar-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:300}
 .sidebar-overlay.show{display:block}
-.sidebar{position:fixed;top:0;left:-300px;width:var(--sidebar-w);height:100%;background:#fff;z-index:400;transition:left .3s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:4px 0 20px rgba(0,0,0,.15);padding-top:calc(60px + var(--safe-top));padding-bottom:calc(20px + var(--safe-bottom))}
+.sidebar{position:fixed;top:0;left:-280px;width:var(--sidebar-w);height:100%;background:#fff;z-index:400;transition:left .3s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:4px 0 20px rgba(0,0,0,.15);padding-top:calc(60px + var(--safe-top));padding-bottom:calc(20px + var(--safe-bottom))}
 .sidebar.open{left:0}
-.sidebar-section{padding:8px 0}
-.sidebar-section-title{padding:8px 20px;font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px}
-.sidebar-item{display:flex;align-items:center;gap:10px;padding:12px 20px;cursor:pointer;transition:background .15s;color:var(--gray-700);font-size:14px;font-weight:500;border-left:3px solid transparent;-webkit-tap-highlight-color:transparent}
+.sidebar-section{padding:6px 0}
+.sidebar-section-title{padding:6px 20px;font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px}
+.sidebar-item{display:flex;align-items:center;gap:8px;padding:11px 20px;cursor:pointer;transition:background .15s;color:var(--gray-700);font-size:13px;font-weight:500;border-left:3px solid transparent}
 .sidebar-item:active{background:var(--gray-100)}
 .sidebar-item.active{background:var(--blue-pale);color:var(--blue);border-left-color:var(--blue);font-weight:700}
-.sidebar-item .si-icon{font-size:18px;width:24px;text-align:center;flex-shrink:0}
-.sidebar-item .si-badge{margin-left:auto;font-size:11px;background:var(--gray-200);color:var(--gray-600);padding:1px 8px;border-radius:10px;font-weight:600}
+.sidebar-item .si-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+.sidebar-item .si-badge{margin-left:auto;font-size:10px;background:var(--gray-200);color:var(--gray-600);padding:1px 7px;border-radius:10px;font-weight:600}
 .sidebar-divider{height:1px;background:var(--gray-200);margin:4px 16px}
 
-/* Main */
-.main{padding-top:calc(56px + var(--safe-top));min-height:100vh}
+/* === MAIN === */
+.main{padding-top:var(--header-h);min-height:100vh}
 .content{max-width:800px;margin:0 auto;padding:12px}
+.page-title{font-size:18px;font-weight:800;color:var(--gray-800);margin-bottom:4px}
+.page-desc{font-size:12px;color:var(--gray-500);margin-bottom:14px}
 
-/* Search */
-.search-box{position:relative;margin-bottom:10px}
-.search-box input{width:100%;padding:12px 40px;border:2px solid var(--gray-200);border-radius:var(--rl);font-size:16px;background:#fff;outline:none;-webkit-appearance:none}
-.search-box input:focus{border-color:var(--blue)}
-.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--gray-400)}
-.search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--gray-400);cursor:pointer;display:none;background:none;border:none}
-.search-clear.show{display:block}
+/* === TOP PAGE === */
+.top-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.top-card{background:#fff;border-radius:var(--rl);padding:16px;border:1px solid var(--gray-100);cursor:pointer;transition:box-shadow .2s;text-align:center}
+.top-card:active{box-shadow:var(--shadow-md)}
+.top-card .tc-icon{font-size:28px;margin-bottom:6px}
+.top-card .tc-label{font-size:13px;font-weight:700;color:var(--gray-800)}
+.top-card .tc-count{font-size:11px;color:var(--gray-500);margin-top:2px}
+.top-wide{grid-column:1/-1;display:flex;align-items:center;gap:12px;text-align:left;padding:14px 16px}
+.top-wide .tc-icon{font-size:24px;margin-bottom:0}
+.top-wide .tc-info{flex:1}
+.top-section-title{font-size:14px;font-weight:700;color:var(--gray-800);margin:16px 0 8px;display:flex;align-items:center;gap:6px}
 
-.category-chips{display:flex;flex-wrap:nowrap;gap:6px;margin-bottom:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:none}
-.category-chips::-webkit-scrollbar{display:none}
-.chip{padding:6px 14px;border-radius:20px;border:1.5px solid var(--gray-200);background:#fff;font-size:12px;font-weight:600;cursor:pointer;color:var(--gray-600);white-space:nowrap;flex-shrink:0}
-.chip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-
-.result-info{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:0 2px}
-.result-count{font-size:13px;color:var(--gray-500)}
-.expand-btn{font-size:12px;color:var(--blue);cursor:pointer;border:none;background:none;font-weight:600}
-
-/* Cards */
+/* === CARDS === */
 .card{background:#fff;border-radius:var(--rl);box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden;border:1px solid var(--gray-100)}
 .card.match-hl{border-color:var(--blue-light);border-width:2px}
-.card-hd{padding:12px 14px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;-webkit-tap-highlight-color:transparent}
+.card-hd{padding:12px 14px;cursor:pointer;display:flex;align-items:flex-start;gap:10px}
 .cbadge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;flex-shrink:0}
-.b-mat{background:#dbeafe;color:#1d4ed8}.b-gnd{background:#d1fae5;color:#065f46}
-.b-slv{background:#fce7f3;color:#9d174d}.b-con{background:#fef3c7;color:#92400e}
-.b-cnd{background:#e0e7ff;color:#3730a3}.b-tst{background:#fde68a;color:#78350f}
+.b-mat{background:#dbeafe;color:#1d4ed8}.b-gnd{background:#d1fae5;color:#065f46}.b-slv{background:#fce7f3;color:#9d174d}.b-con{background:#fef3c7;color:#92400e}.b-cnd{background:#e0e7ff;color:#3730a3}.b-tst{background:#fde68a;color:#78350f}
 .card-title-area{flex:1;min-width:0}
 .card-title{font-size:14px;font-weight:700;color:var(--gray-800)}
 .card-sub{font-size:12px;color:var(--gray-500)}
-.card-mc{font-size:10px;color:var(--blue);background:var(--blue-pale);padding:1px 6px;border-radius:8px;margin-left:6px;font-weight:600}
 .card-exp{font-size:16px;color:var(--gray-400);transition:transform .3s;flex-shrink:0}
 .card.expanded .card-exp{transform:rotate(180deg)}
 .card-body{display:none;padding:0 14px 14px}
 .card.expanded .card-body{display:block}
-
 .photo-gallery{display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
 .photo-gallery::-webkit-scrollbar{display:none}
-.photo-gallery img{border-radius:var(--r);border:1px solid var(--gray-200);height:150px;width:auto;cursor:pointer;flex-shrink:0}
-
+.photo-gallery img{border-radius:var(--r);border:1px solid var(--gray-200);height:140px;width:auto;cursor:pointer;flex-shrink:0}
 .point-list{list-style:none}
 .point-item{padding:8px 10px;background:var(--gray-50);border-radius:var(--r);margin-bottom:4px;font-size:13px;line-height:1.7;border-left:3px solid var(--blue);color:var(--gray-700)}
 .point-item.matched{border-left-color:var(--orange);background:var(--orange-pale)}
 .point-ref{display:inline-block;margin-top:4px;font-size:11px;color:var(--gray-500);background:var(--gray-100);padding:2px 8px;border-radius:4px}
 .highlight{background:#fef08a;padding:1px 2px;border-radius:2px}
 
-/* FAQ/Term cards */
+/* Term cards */
 .term-card{background:#fff;border-radius:var(--r);border:1px solid var(--gray-100);margin-bottom:8px;overflow:hidden}
-.term-hd{padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;-webkit-tap-highlight-color:transparent}
-.term-q{font-size:14px;font-weight:700;color:var(--gray-800);flex:1}
-.term-reading{font-size:11px;color:var(--gray-400)}
+.term-hd{padding:11px 14px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.term-q{font-size:13px;font-weight:700;color:var(--gray-800);flex:1}
 .term-arrow{font-size:14px;color:var(--gray-400);transition:transform .3s}
 .term-card.expanded .term-arrow{transform:rotate(180deg)}
 .term-body{display:none;padding:0 14px 14px}
 .term-card.expanded .term-body{display:block}
-.term-answer{font-size:13px;line-height:1.8;color:var(--gray-700);white-space:pre-wrap}
-.term-detail{font-size:12px;color:var(--gray-500);margin-bottom:6px}
-
-.no-results{text-align:center;padding:48px 20px;color:var(--gray-400)}
-.no-results .no-icon{font-size:40px;margin-bottom:10px}
-
-/* Modal */
+.term-answer{font-size:12px;line-height:1.8;color:var(--gray-700);white-space:pre-wrap}
+.term-detail{font-size:11px;color:var(--gray-500);margin-bottom:4px}
+.no-results{text-align:center;padding:40px 20px;color:var(--gray-400)}
+.no-results .no-icon{font-size:36px;margin-bottom:8px}
 .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.9);z-index:1000;justify-content:center;align-items:center;cursor:pointer}
 .modal-overlay.show{display:flex}
 .modal-overlay img{max-width:95vw;max-height:90vh;border-radius:8px}
 
-/* Page title */
-.page-title{font-size:20px;font-weight:800;color:var(--gray-800);margin-bottom:4px}
-.page-desc{font-size:13px;color:var(--gray-500);margin-bottom:14px}
+/* Category chips */
+.category-chips{display:flex;flex-wrap:nowrap;gap:6px;margin-bottom:10px;overflow-x:auto;scrollbar-width:none}
+.category-chips::-webkit-scrollbar{display:none}
+.chip{padding:6px 14px;border-radius:20px;border:1.5px solid var(--gray-200);background:#fff;font-size:12px;font-weight:600;cursor:pointer;color:var(--gray-600);white-space:nowrap;flex-shrink:0}
+.chip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.suggest-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.stag{padding:5px 12px;border-radius:16px;background:#fff;border:1px solid var(--gray-200);font-size:12px;color:var(--gray-600);cursor:pointer;white-space:nowrap}
+.result-info{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:0 2px}
+.result-count{font-size:13px;color:var(--gray-500)}
+.expand-btn{font-size:12px;color:var(--blue);cursor:pointer;border:none;background:none;font-weight:600}
 
-/* Quiz - compact */
-.quiz-start{text-align:center;padding:32px 16px}
+/* Search result source filter */
+.src-filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.src-filter{padding:5px 12px;border-radius:16px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--gray-200);background:#fff;color:var(--gray-600)}
+.src-filter.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+/* Quiz */
+.quiz-start{text-align:center;padding:24px 16px}
 .quiz-start h2{font-size:20px;margin-bottom:6px}
-.quiz-start p{color:var(--gray-500);margin-bottom:20px;font-size:13px}
-.quiz-options{display:flex;flex-direction:column;gap:8px;max-width:400px;margin:0 auto 20px}
+.quiz-start p{color:var(--gray-500);margin-bottom:16px;font-size:13px}
+.quiz-options{display:flex;flex-direction:column;gap:8px;max-width:400px;margin:0 auto 16px}
 .quiz-option-btn{padding:12px 16px;border:2px solid var(--gray-200);border-radius:var(--r);background:#fff;font-size:14px;font-weight:600;cursor:pointer;text-align:left;color:var(--gray-700)}
 .btn-primary{padding:12px 28px;background:var(--blue);color:#fff;border:none;border-radius:var(--r);font-size:15px;font-weight:700;cursor:pointer;width:100%}
 .btn-secondary{padding:10px 20px;background:#fff;color:var(--gray-700);border:2px solid var(--gray-200);border-radius:var(--r);font-size:14px;font-weight:600;cursor:pointer}
@@ -157,7 +154,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
 .result-breakdown{display:flex;justify-content:center;gap:28px;margin-bottom:24px}
 .result-stat-num{font-size:24px;font-weight:800}
 .result-stat-label{font-size:11px;color:var(--gray-500)}
-
 .ref-category{margin-bottom:20px}
 .ref-category-title{font-size:15px;font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--gray-200)}
 .ref-item{background:#fff;border:1px solid var(--gray-100);border-radius:var(--r);padding:10px 14px;margin-bottom:6px;font-size:13px}
@@ -168,48 +164,53 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
 .stat-num{font-size:28px;font-weight:800;color:var(--blue)}
 .stat-label{font-size:11px;color:var(--gray-500);margin-top:2px}
 
-.suggest-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.stag{padding:5px 12px;border-radius:16px;background:#fff;border:1px solid var(--gray-200);font-size:12px;color:var(--gray-600);cursor:pointer;white-space:nowrap}
-
-/* Desktop sidebar always visible */
 @media(min-width:900px){
   .sidebar{left:0;box-shadow:1px 0 3px rgba(0,0,0,.08);z-index:50}
   .sidebar-overlay{display:none!important}
   .main{margin-left:var(--sidebar-w)}
   .menu-btn{display:none}
+  .header{left:var(--sidebar-w)}
 }
 @media(max-width:600px){
   .content{padding:10px}
-  .photo-gallery img{height:120px}
-  .point-item{font-size:12px;padding:7px 9px}
+  .photo-gallery img{height:110px}
+  .top-grid{gap:8px}
+  .top-card{padding:12px}
+  .top-card .tc-icon{font-size:24px}
 }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <button class="menu-btn" onclick="toggleSidebar()" aria-label="メニュー">☰</button>
-  <h1>⚡ 技術継承ナビ</h1>
-  <span class="header-status" id="onlineStatus">オンライン</span>
+  <div class="header-row">
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+    <h1>⚡ 技術継承ナビ</h1>
+    <span class="header-status" id="onlineStatus">オンライン</span>
+  </div>
+  <div class="header-search">
+    <input type="text" id="globalSearch" placeholder="全 4,300件+ を横断検索（用語・品質管理・FAQ）" oninput="onGlobalSearch()" enterkeyhint="search">
+    <span class="hs-icon">🔍</span>
+    <button class="hs-clear" id="gsClear" onclick="clearGlobalSearch()">✕</button>
+  </div>
 </div>
 
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 <nav class="sidebar" id="sidebar">
   <div class="sidebar-section">
-    <div class="sidebar-section-title">メイン</div>
-    <div class="sidebar-item active" onclick="navigate('search')"><span class="si-icon">🔍</span>横断検索</div>
+    <div class="sidebar-item active" onclick="navigate('top')"><span class="si-icon">🏠</span>トップ</div>
     <div class="sidebar-item" onclick="navigate('quiz')"><span class="si-icon">📝</span>確認テスト</div>
+    <div class="sidebar-item" onclick="navigate('ref')"><span class="si-icon">📋</span>基準値一覧</div>
   </div>
   <div class="sidebar-divider"></div>
   <div class="sidebar-section">
     <div class="sidebar-section-title">品質管理</div>
     <div class="sidebar-item" onclick="navigate('quality')"><span class="si-icon">📸</span>品質管理ポイント<span class="si-badge">29</span></div>
-    <div class="sidebar-item" onclick="navigate('ref')"><span class="si-icon">📋</span>基準値一覧</div>
   </div>
   <div class="sidebar-divider"></div>
   <div class="sidebar-section">
     <div class="sidebar-section-title">用語集</div>
-    <div class="sidebar-item" onclick="navigate('genba')"><span class="si-icon">📖</span>現場で役立つ用語集<span class="si-badge">355</span></div>
+    <div class="sidebar-item" onclick="navigate('genba')"><span class="si-icon">📖</span>現場用語集<span class="si-badge">355</span></div>
     <div class="sidebar-item" onclick="navigate('densetsu')"><span class="si-icon">🔌</span>電設資機材用語集<span class="si-badge">1752</span></div>
     <div class="sidebar-item" onclick="navigate('kenchiku')"><span class="si-icon">🏗️</span>建築用語集<span class="si-badge">1722</span></div>
   </div>
@@ -217,21 +218,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
   <div class="sidebar-section">
     <div class="sidebar-section-title">FAQ・お役立ち</div>
     <div class="sidebar-item" onclick="navigate('faq')"><span class="si-icon">❓</span>業務FAQ<span class="si-badge">83</span></div>
-    <div class="sidebar-item" onclick="navigate('gyoukai')"><span class="si-icon">🏢</span>建設業界について<span class="si-badge">33</span></div>
+    <div class="sidebar-item" onclick="navigate('gyoukai')"><span class="si-icon">🏢</span>建設業界<span class="si-badge">33</span></div>
     <div class="sidebar-item" onclick="navigate('trouble')"><span class="si-icon">⚠️</span>トラブル事例<span class="si-badge">8</span></div>
     <div class="sidebar-item" onclick="navigate('hourei')"><span class="si-icon">📜</span>法令<span class="si-badge">57</span></div>
   </div>
 </nav>
 
 <div class="main">
-  <div class="content" id="mainContent">
-  </div>
+  <div class="content" id="mainContent"></div>
 </div>
 <div class="modal-overlay" id="photoModal" onclick="closeModal()"><img id="modalImg" src="" alt=""></div>
-<div class="install-banner" id="installBanner" style="display:none">
-  <div style="flex:1;font-size:14px;font-weight:600">📲 ホーム画面に追加<br><small style="font-weight:400;color:var(--gray-500)">オフラインでも使えます</small></div>
-  <button class="btn-primary" style="width:auto;padding:8px 16px" id="installBtn" onclick="installApp()">追加</button>
-  <button style="background:none;border:none;color:var(--gray-400);font-size:20px;cursor:pointer" onclick="dismissInstall()">✕</button>
+<div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;padding:12px 16px;box-shadow:0 -4px 12px rgba(0,0,0,.15);z-index:200;border-top:2px solid var(--blue);display:none;align-items:center;gap:10px">
+  <div style="flex:1;font-size:13px;font-weight:600">📲 ホーム画面に追加<br><small style="font-weight:400;color:var(--gray-500)">オフラインでも使えます</small></div>
+  <button class="btn-primary" style="width:auto;padding:8px 16px" onclick="installApp()">追加</button>
+  <button style="background:none;border:none;color:var(--gray-400);font-size:18px;cursor:pointer" onclick="dismissInstall()">✕</button>
 </div>
 <script>
 const PHOTO_DATA = {
@@ -278,23 +278,15 @@ function dismissInstall(){document.getElementById('installBanner').style.display
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show');}
 function selectChip(el){var chips=el.parentElement.querySelectorAll('.chip');for(var i=0;i<chips.length;i++)chips[i].classList.remove('active');el.classList.add('active');}
 
-var currentPage='search';
-function navigate(page){
-  currentPage=page;
-  var items=document.querySelectorAll('.sidebar-item');
-  for(var i=0;i<items.length;i++)items[i].classList.remove('active');
-  if(event&&event.currentTarget)event.currentTarget.classList.add('active');
-  if(window.innerWidth<900)toggleSidebar();
-  renderPage(page);
-}
-
 // Kana
 var H2K={},K2H={};for(var i=0x3041;i<=0x3096;i++){H2K[String.fromCharCode(i)]=String.fromCharCode(i+0x60);K2H[String.fromCharCode(i+0x60)]=String.fromCharCode(i);}
 function toKata(s){return s.replace(/[\u3041-\u3096]/g,function(m){return H2K[m]||m;});}
 function toHira(s){return s.replace(/[\u30A1-\u30F6]/g,function(m){return K2H[m]||m;});}
 function norm(s){return toKata(s).toLowerCase().replace(/[\u30FC\-\u2212]/g,'');}
-
-// === QM Data ===
+function openModal(src){document.getElementById('modalImg').src=src;document.getElementById('photoModal').classList.add('show');}
+function closeModal(){document.getElementById('photoModal').classList.remove('show');}
+function hlText(text,words){var r=text;words.forEach(function(w){var variants=[w,toKata(w),toHira(w)];var unique=[];variants.forEach(function(v){if(unique.indexOf(v)===-1)unique.push(v);});unique.forEach(function(v){r=r.replace(new RegExp('('+v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="highlight">$1</span>');});});return r;}
+function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}return b;}
 var QM_DATA=[
   {cat:"材料搬入",ck:"material",t:"手元開閉器盤",st:"搬入時の確認",pts:["承諾図と確認する","黒板に型式等を記載し撮影する","形状およびスケールを入れ寸法がわかるよう撮影する","規格、容量等が確認できるようにラベルを大きく撮影する"],ref:"",al:["MCCB","ブレーカー"]},
   {cat:"材料搬入",ck:"material",t:"スリーブ材料",st:"搬入時の確認",pts:["製作図と確認する","黒板に型式等を記載し撮影する","形状がわかるように撮影する"],ref:"",al:["貫通"]},
@@ -328,111 +320,113 @@ var QM_DATA=[
 ];
 var CAT_MAP={material:{l:"材料搬入",b:"b-mat",i:"\ud83d\udce6"},grounding:{l:"接地工事",b:"b-gnd",i:"\ud83d\udd0c"},sleeve:{l:"スリーブ・インサート",b:"b-slv",i:"\ud83d\udd27"},concrete:{l:"コンクリート埋設配管",b:"b-con",i:"\ud83c\udfd7\ufe0f"},conduit:{l:"インペイ・露出配管",b:"b-cnd",i:"\ud83d\udcd0"},test:{l:"現場試験",b:"b-tst",i:"\ud83d\udd2c"}};
 
-function openModal(src){document.getElementById('modalImg').src=src;document.getElementById('photoModal').classList.add('show');}
-function closeModal(){document.getElementById('photoModal').classList.remove('show');}
-function hlText(text,words){var r=text;words.forEach(function(w){var variants=[w,toKata(w),toHira(w)];var unique=[];variants.forEach(function(v){if(unique.indexOf(v)===-1)unique.push(v);});unique.forEach(function(v){r=r.replace(new RegExp('('+v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="highlight">$1</span>');});});return r;}
-function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=b[i];b[i]=b[j];b[j]=tmp;}return b;}
-function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
-
-// ===== BUILD UNIFIED INDEX for cross-search =====
+// === UNIFIED INDEX ===
 var ALL_ITEMS=[];
-// Add QM items
-QM_DATA.forEach(function(d,i){
-  ALL_ITEMS.push({type:'qm',idx:i,title:d.t,desc:d.pts.join('。'),cat:d.cat,source:'\ud83d\udcf8 品質管理',searchText:norm([d.t,d.st,d.cat].concat(d.pts).concat([d.ref]).concat(d.al||[]).join(' '))});
-});
-// Add FAQ/term items
-var faqSources={'現場で役立つ用語集':'\ud83d\udcd6 現場用語','電設資機材用語集':'\ud83d\udd0c 電設資機材','建設業界・電設業界について':'\ud83c\udfe2 建設業界','トラブル事例':'\u26a0\ufe0f トラブル','現場業務Q&A':'\u2753 現場Q&A','法令':'\ud83d\udcdc 法令','勤怠':'\u2753 勤怠','経費申請・精算':'\u2753 経費','パソコン等OA関連':'\u2753 PC関連','オンライン会議':'\u2753 会議','総務関連':'\u2753 総務'};
-for(var catName in FAQ_DATA){
-  var src=faqSources[catName]||catName;
-  var catData=FAQ_DATA[catName];
-  for(var sc in catData){
-    catData[sc].forEach(function(e){
-      ALL_ITEMS.push({type:'faq',title:e.q,desc:e.a,detail:e.qd||'',cat:sc,source:src,searchText:norm([e.q,e.qd||'',e.a,sc].join(' '))});
-    });
-  }
-}
-// Add kenchiku items
-KENCHIKU_DATA.forEach(function(t){
-  ALL_ITEMS.push({type:'ken',title:t.t,desc:t.d,cat:t.f,source:'\ud83c\udfd7\ufe0f 建築用語',priority:t.p,searchText:norm([t.t,t.d,t.f].join(' '))});
-});
+QM_DATA.forEach(function(d,i){ALL_ITEMS.push({type:'qm',idx:i,title:d.t,desc:d.pts.join('。'),cat:d.cat,source:'\ud83d\udcf8 品質管理',searchText:norm([d.t,d.st,d.cat].concat(d.pts).concat([d.ref]).concat(d.al||[]).join(' '))});});
+var faqSrc={'現場で役立つ用語集':'\ud83d\udcd6 現場用語','電設資機材用語集':'\ud83d\udd0c 電設資機材','建設業界・電設業界について':'\ud83c\udfe2 建設業界','トラブル事例':'\u26a0\ufe0f トラブル','現場業務Q&A':'\u2753 現場Q&A','法令':'\ud83d\udcdc 法令','勤怠':'\u2753 勤怠','経費申請・精算':'\u2753 経費','パソコン等OA関連':'\u2753 PC','オンライン会議':'\u2753 会議','総務関連':'\u2753 総務'};
+for(var cn in FAQ_DATA){var src=faqSrc[cn]||cn;var cd=FAQ_DATA[cn];for(var sc in cd){cd[sc].forEach(function(e){ALL_ITEMS.push({type:'faq',title:e.q,desc:e.a,detail:e.qd||'',cat:sc,source:src,searchText:norm([e.q,e.qd||'',e.a,sc].join(' '))});});}}
+KENCHIKU_DATA.forEach(function(t){ALL_ITEMS.push({type:'ken',title:t.t,desc:t.d,cat:t.f,source:'\ud83c\udfd7\ufe0f 建築用語',priority:t.p,searchText:norm([t.t,t.d,t.f].join(' '))});});
 
-// ===== RENDER PAGE =====
+// === NAVIGATION ===
+var currentPage='top';
+var isSearchActive=false;
+function navigate(page){
+  currentPage=page;isSearchActive=false;
+  document.getElementById('globalSearch').value='';
+  document.getElementById('gsClear').classList.remove('show');
+  var items=document.querySelectorAll('.sidebar-item');
+  for(var i=0;i<items.length;i++)items[i].classList.remove('active');
+  if(event&&event.currentTarget)event.currentTarget.classList.add('active');
+  if(window.innerWidth<900)toggleSidebar();
+  renderPage(page);
+}
 function renderPage(page){
   var mc=document.getElementById('mainContent');
   switch(page){
-    case 'search': renderCrossSearchPage(mc); break;
+    case 'top': renderTopPage(mc); break;
     case 'quality': renderQualityPage(mc); break;
     case 'quiz': renderQuizPage(mc); break;
     case 'ref': renderRefPage(mc); break;
-    case 'genba': renderTermPage(mc,'現場で役立つ用語集','\ud83d\udcd6 現場で役立つ用語集','現場で使われる専門用語・略語（355件）'); break;
+    case 'genba': renderTermPage(mc,'現場で役立つ用語集','\ud83d\udcd6 現場で役立つ用語集','現場で使われる専門用語（355件）'); break;
     case 'densetsu': renderTermPage(mc,'電設資機材用語集','\ud83d\udd0c 電設資機材用語集','電設資機材の専門用語（1752件）'); break;
     case 'kenchiku': renderKenchikuPage(mc); break;
     case 'faq': renderFaqPage(mc); break;
-    case 'gyoukai': renderTermPage(mc,'建設業界・電設業界について','\ud83c\udfe2 建設業界・電設業界について','業界の基礎知識'); break;
-    case 'trouble': renderTermPage(mc,'トラブル事例','\u26a0\ufe0f トラブル事例','現場で起こりうるトラブルと対応'); break;
-    case 'hourei': renderTermPage(mc,'法令','\ud83d\udcdc 法令','電気工事関連の法令解説'); break;
+    case 'gyoukai': renderTermPage(mc,'建設業界・電設業界について','\ud83c\udfe2 建設業界','業界の基礎知識'); break;
+    case 'trouble': renderTermPage(mc,'トラブル事例','\u26a0\ufe0f トラブル事例','トラブルと対応'); break;
+    case 'hourei': renderTermPage(mc,'法令','\ud83d\udcdc 法令','電気工事関連の法令'); break;
   }
   window.scrollTo(0,0);
 }
 
-// ===== CROSS SEARCH PAGE =====
-var csFilter=null;
-function renderCrossSearchPage(mc){
-  mc.innerHTML='<div class="page-title">\ud83d\udd0d 横断検索</div><div class="page-desc">品質管理・用語集・FAQ 全'+ALL_ITEMS.length+'件から一括検索</div>'+
-  '<div class="search-box"><span class="search-icon">\ud83d\udd0d</span><input type="text" id="csInput" placeholder="何でも検索（例：接地、MCCB、脚立、検電器）" oninput="crossSearch()" enterkeyhint="search" autofocus><button class="search-clear" id="csClear" onclick="document.getElementById(\'csInput\').value=\'\';crossSearch()">\u2715</button></div>'+
-  '<div class="category-chips" id="csChips"></div>'+
-  '<div class="result-info"><span id="csCount" class="result-count"></span></div>'+
-  '<div id="csResults"></div>';
-  var sources=[{k:null,l:'すべて'},{k:'qm',l:'\ud83d\udcf8 品質管理'},{k:'faq-genba',l:'\ud83d\udcd6 現場用語'},{k:'faq-densetsu',l:'\ud83d\udd0c 電設資機材'},{k:'ken',l:'\ud83c\udfd7\ufe0f 建築用語'},{k:'faq-other',l:'\u2753 FAQ・法令'}];
-  var h='';sources.forEach(function(s){h+='<button class="chip'+(s.k===null?' active':'')+'" onclick="selectChip(this);csFilter='+(s.k===null?'null':'\''+s.k+'\'')+';crossSearch()">'+s.l+'</button>';});
-  document.getElementById('csChips').innerHTML=h;
-  csFilter=null;
-  document.getElementById('csResults').innerHTML='<div style="text-align:center;padding:40px 20px;color:var(--gray-400)"><div style="font-size:48px;margin-bottom:12px">\ud83d\udd0d</div><p style="font-size:15px">キーワードを入力して検索してください</p><p style="font-size:13px;margin-top:8px;color:var(--gray-400)">ひらがな・カタカナ・英字どれでもOK</p></div>';
-  document.getElementById('csCount').textContent=ALL_ITEMS.length+' 件のデータ';
-}
-function crossSearch(){
-  var raw=document.getElementById('csInput').value.trim();
-  document.getElementById('csClear').classList.toggle('show',raw.length>0);
-  if(!raw){
-    document.getElementById('csResults').innerHTML='<div style="text-align:center;padding:40px 20px;color:var(--gray-400)"><div style="font-size:48px;margin-bottom:12px">\ud83d\udd0d</div><p style="font-size:15px">キーワードを入力して検索してください</p></div>';
-    document.getElementById('csCount').textContent=ALL_ITEMS.length+' 件のデータ';
-    return;
-  }
-  var nq=norm(raw);
-  var results=ALL_ITEMS.filter(function(it){
-    // Source filter
-    if(csFilter==='qm'&&it.type!=='qm')return false;
-    if(csFilter==='ken'&&it.type!=='ken')return false;
-    if(csFilter==='faq-genba'&&!(it.type==='faq'&&it.source.indexOf('現場用語')>=0))return false;
-    if(csFilter==='faq-densetsu'&&!(it.type==='faq'&&it.source.indexOf('電設資機材')>=0))return false;
-    if(csFilter==='faq-other'&&!(it.type==='faq'&&it.source.indexOf('現場用語')<0&&it.source.indexOf('電設資機材')<0)&&it.type!=='faq')return false;
-    if(csFilter==='faq-other'){if(it.type==='qm'||it.type==='ken')return false;if(it.type==='faq'&&(it.source.indexOf('現場用語')>=0||it.source.indexOf('電設資機材')>=0))return false;}
-    return it.searchText.indexOf(nq)>=0;
-  });
-  // Sort: title match first
-  results.sort(function(a,b){var am=norm(a.title).indexOf(nq)>=0?1:0,bm=norm(b.title).indexOf(nq)>=0?1:0;return bm-am;});
-  var cnt=document.getElementById('csCount'),ctn=document.getElementById('csResults');
-  cnt.textContent=results.length+' 件ヒット';
-  if(!results.length){ctn.innerHTML='<div class="no-results"><div class="no-icon">\ud83d\udd0d</div><p>該当なし</p><p class="hint" style="font-size:12px;color:var(--gray-400)">ひらがな・カタカナどちらでも検索できます</p></div>';return;}
-  var display=results.slice(0,150);var hasMore=results.length>150;
-  var ws=raw.split(/\s+/).filter(function(w){return w;});
-  ctn.innerHTML=display.map(function(it,i){
-    var tText=hlText(it.title,ws);
-    var dText=it.desc.length>120?it.desc.substring(0,120)+'…':it.desc;
-    dText=hlText(dText,ws);
-    var srcBadge='<span class="cbadge" style="background:var(--gray-100);color:var(--gray-600);font-size:10px">'+it.source+'</span>';
-    var catBadge=it.cat?'<span style="font-size:11px;color:var(--gray-500);margin-left:6px">'+it.cat+'</span>':'';
-    var priBadge='';
-    if(it.priority){var pc={A:'#dc2626',B:'#d97706',C:'#2563eb',D:'#6b7280'};priBadge='<span style="display:inline-block;width:16px;height:16px;line-height:16px;text-align:center;border-radius:3px;font-size:9px;font-weight:800;color:'+pc[it.priority]+';background:var(--gray-100);margin-right:4px">'+it.priority+'</span>';}
-    // Photos for QM items
-    var photoHtml='';
-    if(it.type==='qm'){var ph=PHOTO_DATA[it.idx]||[];if(ph.length)photoHtml='<div class="photo-gallery" style="margin-top:8px">'+ph.map(function(p){return '<img src="'+p+'" onclick="openModal(this.src)" loading="lazy" style="height:80px">';}).join('')+'</div>';}
-    return '<div class="term-card" id="cs'+i+'"><div class="term-hd" onclick="document.getElementById(\'cs'+i+'\').classList.toggle(\'expanded\')">'+priBadge+'<div class="term-q">'+tText+'</div>'+srcBadge+catBadge+'<span class="term-arrow">\u25bc</span></div><div class="term-body"><div class="term-answer">'+hlText(it.desc,ws)+'</div>'+photoHtml+'</div></div>';
-  }).join('')+(hasMore?'<div style="text-align:center;padding:16px;color:var(--gray-500);font-size:13px">他 '+(results.length-150)+' 件。検索を絞り込んでください。</div>':'');
+// === TOP PAGE ===
+function renderTopPage(mc){
+  mc.innerHTML='<div class="page-title">\u26a1 技術継承ナビ</div><div class="page-desc">旭日電気工業 品質管理・技術サポートG</div>'+
+  '<div class="top-grid">'+
+    '<div class="top-card" onclick="navigate(\'quality\')"><div class="tc-icon">\ud83d\udcf8</div><div class="tc-label">品質管理ポイント</div><div class="tc-count">写真付き 29項目</div></div>'+
+    '<div class="top-card" onclick="navigate(\'quiz\')"><div class="tc-icon">\ud83d\udcdd</div><div class="tc-label">確認テスト</div><div class="tc-count">全カテゴリ対応</div></div>'+
+    '<div class="top-card" onclick="navigate(\'genba\')"><div class="tc-icon">\ud83d\udcd6</div><div class="tc-label">現場用語集</div><div class="tc-count">355件</div></div>'+
+    '<div class="top-card" onclick="navigate(\'kenchiku\')"><div class="tc-icon">\ud83c\udfd7\ufe0f</div><div class="tc-label">建築用語集</div><div class="tc-count">1,722件</div></div>'+
+    '<div class="top-card" onclick="navigate(\'densetsu\')"><div class="tc-icon">\ud83d\udd0c</div><div class="tc-label">電設資機材用語集</div><div class="tc-count">1,752件</div></div>'+
+    '<div class="top-card" onclick="navigate(\'ref\')"><div class="tc-icon">\ud83d\udccb</div><div class="tc-label">基準値一覧</div><div class="tc-count">数値基準まとめ</div></div>'+
+  '</div>'+
+  '<div class="top-section-title">\u2753 FAQ・お役立ち</div>'+
+  '<div class="top-grid">'+
+    '<div class="top-card" onclick="navigate(\'faq\')"><div class="tc-icon">\u2753</div><div class="tc-label">業務FAQ</div><div class="tc-count">83件</div></div>'+
+    '<div class="top-card" onclick="navigate(\'hourei\')"><div class="tc-icon">\ud83d\udcdc</div><div class="tc-label">法令</div><div class="tc-count">57件</div></div>'+
+    '<div class="top-card" onclick="navigate(\'gyoukai\')"><div class="tc-icon">\ud83c\udfe2</div><div class="tc-label">建設業界</div><div class="tc-count">33件</div></div>'+
+    '<div class="top-card" onclick="navigate(\'trouble\')"><div class="tc-icon">\u26a0\ufe0f</div><div class="tc-label">トラブル事例</div><div class="tc-count">8件</div></div>'+
+  '</div>';
 }
 
-// ===== QUALITY PAGE =====
+// === GLOBAL SEARCH (header) ===
+var gsFilter=null;
+function clearGlobalSearch(){document.getElementById('globalSearch').value='';document.getElementById('gsClear').classList.remove('show');if(isSearchActive){isSearchActive=false;renderPage(currentPage);}}
+function onGlobalSearch(){
+  var raw=document.getElementById('globalSearch').value.trim();
+  document.getElementById('gsClear').classList.toggle('show',raw.length>0);
+  if(!raw){if(isSearchActive){isSearchActive=false;renderPage(currentPage);}return;}
+  isSearchActive=true;gsFilter=null;
+  renderSearchResults(raw);
+}
+function renderSearchResults(raw){
+  var mc=document.getElementById('mainContent');
+  var nq=norm(raw);
+  var results=ALL_ITEMS.filter(function(it){
+    if(gsFilter==='qm'&&it.type!=='qm')return false;
+    if(gsFilter==='ken'&&it.type!=='ken')return false;
+    if(gsFilter==='genba'&&!(it.type==='faq'&&it.source.indexOf('\u73fe\u5834\u7528\u8a9e')>=0))return false;
+    if(gsFilter==='densetsu'&&!(it.type==='faq'&&it.source.indexOf('\u96fb\u8a2d\u8cc7\u6a5f\u6750')>=0))return false;
+    if(gsFilter==='other'){if(it.type==='qm'||it.type==='ken')return false;if(it.type==='faq'&&(it.source.indexOf('\u73fe\u5834\u7528\u8a9e')>=0||it.source.indexOf('\u96fb\u8a2d\u8cc7\u6a5f\u6750')>=0))return false;}
+    return it.searchText.indexOf(nq)>=0;
+  });
+  results.sort(function(a,b){return(norm(b.title).indexOf(nq)>=0?1:0)-(norm(a.title).indexOf(nq)>=0?1:0);});
+  var ws=raw.split(/\s+/).filter(function(w){return w;});
+  var filterHtml='<div class="src-filters">'+
+    '<span class="src-filter'+(gsFilter===null?' active':'')+'" onclick="gsFilter=null;renderSearchResults(document.getElementById(\'globalSearch\').value.trim())">すべて</span>'+
+    '<span class="src-filter'+(gsFilter==='qm'?' active':'')+'" onclick="gsFilter=\'qm\';renderSearchResults(document.getElementById(\'globalSearch\').value.trim())">\ud83d\udcf8 品質管理</span>'+
+    '<span class="src-filter'+(gsFilter==='genba'?' active':'')+'" onclick="gsFilter=\'genba\';renderSearchResults(document.getElementById(\'globalSearch\').value.trim())">\ud83d\udcd6 現場用語</span>'+
+    '<span class="src-filter'+(gsFilter==='densetsu'?' active':'')+'" onclick="gsFilter=\'densetsu\';renderSearchResults(document.getElementById(\'globalSearch\').value.trim())">\ud83d\udd0c 電設資機材</span>'+
+    '<span class="src-filter'+(gsFilter==='ken'?' active':'')+'" onclick="gsFilter=\'ken\';renderSearchResults(document.getElementById(\'globalSearch\').value.trim())">\ud83c\udfd7 建築用語</span>'+
+    '<span class="src-filter'+(gsFilter==='other'?' active':'')+'" onclick="gsFilter=\'other\';renderSearchResults(document.getElementById(\'globalSearch\').value.trim())">\u2753 FAQ・法令</span>'+
+  '</div>';
+  mc.innerHTML=filterHtml+'<div class="result-info"><span class="result-count">'+results.length+' 件ヒット</span></div><div id="gsResults"></div>';
+  if(!results.length){document.getElementById('gsResults').innerHTML='<div class="no-results"><div class="no-icon">\ud83d\udd0d</div><p>該当なし</p></div>';return;}
+  var display=results.slice(0,150);var hasMore=results.length>150;
+  var pc={A:'#dc2626',B:'#d97706',C:'#2563eb',D:'#6b7280'},pb={A:'#fef2f2',B:'#fffbeb',C:'#eff6ff',D:'#f9fafb'};
+  document.getElementById('gsResults').innerHTML=display.map(function(it,i){
+    var tText=hlText(it.title,ws);
+    var dText=it.desc.length>150?it.desc.substring(0,150)+'\u2026':it.desc;dText=hlText(dText,ws);
+    var srcBadge='<span class="cbadge" style="background:var(--gray-100);color:var(--gray-600);font-size:10px">'+it.source+'</span>';
+    var priBadge='';if(it.priority){priBadge='<span style="display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;font-size:9px;font-weight:800;color:'+(pc[it.priority]||'#6b7280')+';background:'+(pb[it.priority]||'#f9fafb')+';margin-right:4px">'+it.priority+'</span>';}
+    var photoHtml='';if(it.type==='qm'){var ph=PHOTO_DATA[it.idx]||[];if(ph.length)photoHtml='<div class="photo-gallery" style="margin-top:8px">'+ph.map(function(p){return '<img src="'+p+'" onclick="openModal(this.src)" loading="lazy" style="height:80px">';}).join('')+'</div>';}
+    return '<div class="term-card" id="gs'+i+'"><div class="term-hd" onclick="document.getElementById(\'gs'+i+'\').classList.toggle(\'expanded\')">'+priBadge+'<div class="term-q">'+tText+'</div>'+srcBadge+'<span class="term-arrow">\u25bc</span></div><div class="term-body"><div class="term-answer">'+hlText(it.desc,ws)+'</div>'+photoHtml+'</div></div>';
+  }).join('')+(hasMore?'<div style="text-align:center;padding:16px;color:var(--gray-500);font-size:13px">他 '+(results.length-150)+' 件。検索を絞り込んでください。</div>':'');
+}
 var qmCat=null,qmAllExp=false;
+var termSubCat=null;
+var faqCatFilter=null;
+var kenField=null,kenPriFilter={};
+var qQ=[],qI=0,qS=0,qCatFilter=null;
 function renderQualityPage(mc){
   mc.innerHTML='<div class="page-title">\ud83d\udcf8 品質管理ポイント</div><div class="page-desc">写真付き確認ポイントを検索</div>'+
   '<div class="search-box"><span class="search-icon">\ud83d\udd0d</span><input type="text" id="qmSearch" placeholder="例：接地 75cm、ぷるぼっくす" oninput="searchQM()" enterkeyhint="search"><button class="search-clear" id="qmClear" onclick="document.getElementById(\'qmSearch\').value=\'\';searchQM()">\u2715</button></div>'+
@@ -472,9 +466,6 @@ function searchQM(){
     return '<div class="card'+(ae?' expanded':'')+(ih?' match-hl':'')+'" id="qc'+i+'"><div class="card-hd" onclick="document.getElementById(\'qc'+i+'\').classList.toggle(\'expanded\')"><span class="cbadge '+c.b+'">'+c.i+' '+d.cat+'</span><div class="card-title-area"><div class="card-title">'+(hq?hlText(d.t,ws):d.t)+'</div><div class="card-sub">'+d.st+'</div></div><span class="card-exp">\u25bc</span></div><div class="card-body">'+phH+'<ul class="point-list">'+ptH+'</ul>'+refH+'</div></div>';}).join('');
 }
 function toggleAllQM(){qmAllExp=!qmAllExp;var cards=document.querySelectorAll('#qmResults .card');for(var i=0;i<cards.length;i++){if(qmAllExp)cards[i].classList.add('expanded');else cards[i].classList.remove('expanded');}document.getElementById('qmExpand').textContent=qmAllExp?'すべて閉じる':'すべて開く';}
-
-// ===== TERM PAGE =====
-var termSubCat=null;
 function renderTermPage(mc,catName,title,desc){
   var catData=FAQ_DATA[catName]||{};var subCats=Object.keys(catData);var total=0;for(var k in catData)total+=catData[k].length;
   mc.innerHTML='<div class="page-title">'+title+'</div><div class="page-desc">'+desc+'（'+total+'件）</div>'+
@@ -496,9 +487,6 @@ function searchTerms(catName){
   var ws=raw?raw.split(/\s+/).filter(function(w){return w;}):[];var di=items.slice(0,300);var hm=items.length>300;
   ctn.innerHTML=di.map(function(it,i){return '<div class="term-card" id="tc'+i+'"><div class="term-hd" onclick="document.getElementById(\'tc'+i+'\').classList.toggle(\'expanded\')"><div class="term-q">'+(raw?hlText(it.q,ws):it.q)+'</div><span class="term-arrow">\u25bc</span></div><div class="term-body">'+(it.qd?'<div class="term-detail">'+(raw?hlText(it.qd,ws):it.qd)+'</div>':'')+'<div class="term-answer">'+(raw?hlText(it.a,ws):it.a)+'</div></div></div>';}).join('')+(hm?'<div style="text-align:center;padding:16px;color:var(--gray-500);font-size:13px">他 '+(items.length-300)+' 件</div>':'');
 }
-
-// ===== FAQ PAGE =====
-var faqCatFilter=null;
 function renderFaqPage(mc){
   var faqCats=["勤怠","経費申請・精算","パソコン等OA関連","オンライン会議","総務関連","現場業務Q&A"];
   var total=0;faqCats.forEach(function(c){var d=FAQ_DATA[c]||{};for(var k in d)total+=d[k].length;});
@@ -519,9 +507,6 @@ function searchFaq(){
   var ws=raw?raw.split(/\s+/).filter(function(w){return w;}):[];
   ctn.innerHTML=items.map(function(it,i){return '<div class="term-card" id="fq'+i+'"><div class="term-hd" onclick="document.getElementById(\'fq'+i+'\').classList.toggle(\'expanded\')"><div class="term-q">'+(raw?hlText(it.q,ws):it.q)+'</div><span class="term-arrow">\u25bc</span></div><div class="term-body"><div class="term-answer">'+(raw?hlText(it.a,ws):it.a)+'</div></div></div>';}).join('');
 }
-
-// ===== KENCHIKU PAGE =====
-var kenField=null,kenPriFilter={};
 function renderKenchikuPage(mc){
   var fields=[];KENCHIKU_DATA.forEach(function(t){if(fields.indexOf(t.f)<0)fields.push(t.f);});
   mc.innerHTML='<div class="page-title">\ud83c\udfd7\ufe0f 建築用語集</div><div class="page-desc">優先度付き建築用語（'+KENCHIKU_DATA.length+'件）</div>'+
@@ -546,8 +531,6 @@ function searchKenchiku(){
   var pc={A:'#dc2626',B:'#d97706',C:'#2563eb',D:'#6b7280'},pb={A:'#fef2f2',B:'#fffbeb',C:'#eff6ff',D:'#f9fafb'};
   ctn.innerHTML=di.map(function(t,i){return '<div class="term-card" id="kc'+i+'"><div class="term-hd" onclick="document.getElementById(\'kc'+i+'\').classList.toggle(\'expanded\')"><span style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:4px;font-size:11px;font-weight:800;color:'+(pc[t.p]||'#6b7280')+';background:'+(pb[t.p]||'#f9fafb')+';flex-shrink:0;margin-right:4px">'+t.p+'</span><div class="term-q">'+(raw?hlText(t.t,ws):t.t)+'</div><span class="term-arrow">\u25bc</span></div><div class="term-body"><div class="term-detail">'+t.f+'</div><div class="term-answer">'+(raw?hlText(t.d,ws):t.d)+'</div></div></div>';}).join('')+(hm?'<div style="text-align:center;padding:16px;color:var(--gray-500);font-size:13px">他 '+(items.length-200)+' 件</div>':'');
 }
-
-// ===== REF PAGE =====
 function renderRefPage(mc){
   var tp=0;QM_DATA.forEach(function(d){tp+=d.pts.length;});
   mc.innerHTML='<div class="page-title">\ud83d\udccb 基準値一覧</div><div class="page-desc">現場で頻出する数値基準</div>'+
@@ -555,9 +538,6 @@ function renderRefPage(mc){
   var specs=[{cat:"接地工事",items:[{t:"接地極の埋設深さ",v:"地下75cm以上"},{t:"接地極相互の間隔",v:"2m以上"}]},{cat:"コンクリート埋設配管工事",items:[{t:"配管の曲げ半径",v:"管内径の6倍以上"},{t:"CD管・PF管の結束間隔",v:"1000mm以内"},{t:"CD管・PF管相互の間隔",v:"40mm以上"},{t:"二重天井内配管",v:"PF管のみ（CD管不可）"}]},{cat:"インペイ・露出配管工事",items:[{t:"プルボックス周り支持距離",v:"500mm以下"},{t:"位置ボックス周り支持距離",v:"300mm以下"},{t:"配管支持間隔（一般）",v:"2000mm以下"},{t:"金属管の曲げ半径",v:"管内径の6倍以上"},{t:"金属管の屈曲箇所",v:"3箇所以下"},{t:"PF管支持間隔（軽鉄内）",v:"1500mm以内"},{t:"ケーブル支持（ボックスから）",v:"300mm以内"},{t:"天井内ケーブル結束本数",v:"6本以下"}]},{cat:"現場試験",items:[{t:"対地電圧150V以下",v:"0.1M\u03a9以上"},{t:"150V超〜300V以下",v:"0.2M\u03a9以上"},{t:"300V超",v:"0.4M\u03a9以上"},{t:"公正周期",v:"1年"}]}];
   document.getElementById('refList').innerHTML=specs.map(function(s){return '<div class="ref-category"><div class="ref-category-title">\ud83d\udccf '+s.cat+'</div>'+s.items.map(function(it){return '<div class="ref-item"><strong>'+it.t+'</strong><span>'+it.v+'</span></div>';}).join('')+'</div>';}).join('');
 }
-
-// ===== QUIZ (ALL CATEGORIES) =====
-var qQ=[],qI=0,qS=0,qCatFilter=null;
 function renderQuizPage(mc){
   mc.innerHTML='<div id="quizStart" class="quiz-start"><h2>\ud83d\udcdd 確認テスト</h2><p>全カテゴリからランダム出題</p>'+
   '<div style="margin-bottom:12px;font-size:13px;color:var(--gray-500)">出題範囲を選択：</div>'+
@@ -577,7 +557,6 @@ function renderQuizPage(mc){
   }).join('');
 }
 function selectQuizCat2(cat,el){qCatFilter=cat;var btns=document.querySelectorAll('.quiz-option-btn');for(var i=0;i<btns.length;i++){btns[i].style.borderColor='var(--gray-200)';btns[i].style.color='var(--gray-700)';}el.style.borderColor='var(--blue)';el.style.color='var(--blue)';}
-
 function genAllQuiz(){
   var qs=[];
   // QM questions (existing numeric + TF)
@@ -643,7 +622,6 @@ function genAllQuiz(){
   }
   return shuffle(qs).slice(0,10);
 }
-
 function startQuiz(){qQ=genAllQuiz();if(!qQ.length){alert('問題不足');return;}qI=0;qS=0;document.getElementById('quizStart').style.display='none';document.getElementById('quizResult').style.display='none';document.getElementById('quizArea').style.display='block';showQ();}
 function showQ(){
   var q=qQ[qI],a=document.getElementById('quizArea'),pr=(qI/qQ.length)*100;
@@ -673,8 +651,7 @@ function showRes(){document.getElementById('quizArea').style.display='none';var 
   r.innerHTML='<div class="result-score '+sc+'">'+p+'%</div><div class="result-label">'+mg+'</div><div class="result-breakdown"><div style="text-align:center"><div class="result-stat-num" style="color:var(--green)">'+qS+'</div><div class="result-stat-label">正解</div></div><div style="text-align:center"><div class="result-stat-num" style="color:var(--red)">'+(qQ.length-qS)+'</div><div class="result-stat-label">不正解</div></div></div><div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="btn-primary" style="width:auto" onclick="startQuiz()">もう一度</button><button class="btn-secondary" onclick="document.getElementById(\'quizResult\').style.display=\'none\';document.getElementById(\'quizStart\').style.display=\'block\'">戻る</button></div>';}
 
 // Init
-document.addEventListener('DOMContentLoaded',function(){renderPage('search');});
-
+document.addEventListener('DOMContentLoaded',function(){renderPage('top');});
 </script>
 </body>
 </html>

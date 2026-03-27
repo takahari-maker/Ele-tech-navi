@@ -145,39 +145,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
 @media(min-width:900px){.sidebar{left:0;box-shadow:1px 0 3px rgba(0,0,0,.08);z-index:50}.sidebar-overlay{display:none!important}.main{margin-left:var(--sidebar-w)}.menu-btn{display:none}.header{left:var(--sidebar-w)}}
 @media(max-width:600px){.content{padding:10px}.photo-gallery img{height:110px}.top-grid{gap:8px}.top-card{padding:12px}.top-card .tc-icon{font-size:22px}}
 
-/* Law AI Chat */
-.law-chat{margin-top:16px;border:2px solid var(--blue-light);border-radius:var(--rl);overflow:hidden;background:#fff}
-.law-chat-header{background:var(--blue-pale);padding:10px 14px;font-size:13px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:8px}
-.law-chat-disclaimer{padding:8px 14px;font-size:11px;color:var(--orange);background:var(--orange-pale);border-bottom:1px solid #fde68a;line-height:1.6}
-.law-chat-messages{padding:14px;min-height:60px;max-height:400px;overflow-y:auto}
-.law-msg{margin-bottom:12px;display:flex;gap:8px}
-.law-msg-user{justify-content:flex-end}
-.law-msg-ai{justify-content:flex-start}
-.law-msg-bubble{max-width:85%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.8;white-space:pre-wrap}
-.law-msg-user .law-msg-bubble{background:var(--blue);color:#fff;border-bottom-right-radius:4px}
-.law-msg-ai .law-msg-bubble{background:var(--gray-100);color:var(--gray-800);border-bottom-left-radius:4px}
-.law-msg-ai .law-msg-icon{width:28px;height:28px;border-radius:50%;background:var(--blue-pale);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.law-chat-input{display:flex;border-top:1px solid var(--gray-200);padding:8px}
-.law-chat-input input{flex:1;padding:10px 12px;border:1.5px solid var(--gray-200);border-radius:var(--r);font-size:14px;outline:none;-webkit-appearance:none}
-.law-chat-input input:focus{border-color:var(--blue)}
-.law-chat-input button{margin-left:8px;padding:10px 16px;background:var(--blue);color:#fff;border:none;border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
-.law-chat-input button:disabled{background:var(--gray-300);cursor:not-allowed}
-.law-thinking{display:flex;align-items:center;gap:6px;padding:8px 14px;font-size:12px;color:var(--gray-500)}
-.law-thinking-dots span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gray-400);animation:dotPulse 1.4s infinite;margin-right:3px}
-.law-thinking-dots span:nth-child(2){animation-delay:.2s}
-.law-thinking-dots span:nth-child(3){animation-delay:.4s}
-@keyframes dotPulse{0%,80%,100%{opacity:.3}40%{opacity:1}}
 
-/* Settings */
-.settings-section{background:#fff;border-radius:var(--rl);border:1px solid var(--gray-100);padding:16px;margin-bottom:12px}
-.settings-label{font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:6px}
-.settings-desc{font-size:12px;color:var(--gray-500);margin-bottom:10px;line-height:1.6}
-.settings-input{width:100%;padding:14px 14px;border:2px solid var(--blue);border-radius:var(--r);font-size:16px;font-family:monospace;outline:none;background:var(--blue-pale);color:var(--gray-800)}
-.settings-input:focus{border-color:var(--blue)}
-.settings-status{margin-top:8px;font-size:12px;padding:6px 10px;border-radius:var(--r)}
-.settings-status.ok{background:var(--green-pale);color:#065f46}
-.settings-status.ng{background:var(--red-pale);color:#991b1b}
-.settings-save{margin-top:12px;padding:14px 24px;background:var(--blue);color:#fff;border:none;border-radius:var(--r);font-size:16px;font-weight:700;cursor:pointer;width:100%}
+
+
 </style>
 </head>
 <body>
@@ -237,10 +207,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
   <div class="sidebar-divider"></div>
   <div class="sidebar-section">
     <div class="sidebar-item" onclick="navigate('quiz')"><span class="si-icon">📝</span>知識確認テスト</div>
-  </div>
-  <div class="sidebar-divider"></div>
-  <div class="sidebar-section">
-    <div class="sidebar-item" onclick="navigate('settings')"><span class="si-icon">⚙️</span>設定</div>
+
   </div>
 </nav>
 <div class="main"><div class="content" id="mainContent"></div></div>
@@ -382,7 +349,6 @@ function renderPage(page){
     case 'trouble':renderTermPage(mc,'トラブル事例','\u26a0\ufe0f トラブル事例','現場のトラブルと対応');break;
     case 'kaizen':renderKaizenPage(mc);break;
     case 'quiz':renderQuizPage(mc);break;
-    case 'settings':renderSettingsPage(mc);break;
   }
   window.scrollTo(0,0);
 }
@@ -460,7 +426,7 @@ function renderSearchResults(raw){
   }).join('')+(hm?'<div style="text-align:center;padding:16px;color:var(--gray-500);font-size:13px">他 '+(results.length-150)+' 件</div>':'');
 }
 
-// Law page with e-Gov links + AI chat
+// Law page with e-Gov links
 var EGOV_LINKS={
   '建設業法':'https://laws.e-gov.go.jp/law/324AC0000000100',
   '建築基準法':'https://laws.e-gov.go.jp/law/325AC0000000201',
@@ -471,252 +437,26 @@ var EGOV_LINKS={
   '電気用品安全法':'https://laws.e-gov.go.jp/law/336AC0000000234',
   '労働安全衛生法':'https://laws.e-gov.go.jp/law/347AC0000000057'
 };
-
-var lawChatHistory={};
 function renderLawPage(mc,lawName){
   var lawData=FAQ_DATA['\u6cd5\u4ee4']||{};
   var items=[];
-  var chatLawName=lawName||'その他法令';
-
   if(lawName){
     for(var sc in lawData){if(sc.indexOf(lawName)>=0){lawData[sc].forEach(function(e){items.push(e);});}}
     var egovLink=EGOV_LINKS[lawName]||'';
-    var linkHtml=egovLink?'<div style="margin-bottom:14px;padding:12px;background:var(--blue-pale);border-radius:var(--r);border:1px solid var(--blue-light)"><a href="'+egovLink+'" target="_blank" rel="noopener" style="color:var(--blue);font-size:13px;font-weight:600;text-decoration:none">\ud83d\udcdc '+lawName+'の最新条文を見る（e-Gov法令検索） \u2197</a><div style="font-size:11px;color:var(--gray-500);margin-top:4px">\u203b\u6cd5\u4ee4\u306f\u6539\u6b63\u3055\u308c\u308b\u5834\u5408\u304c\u3042\u308a\u307e\u3059\u3002\u6700\u65b0\u306e\u6761\u6587\u306fe-Gov\u6cd5\u4ee4\u691c\u7d22\u3067\u78ba\u8a8d\u3057\u3066\u304f\u3060\u3055\u3044\u3002</div></div>':'';
-    mc.innerHTML='<div class="page-title">\ud83d\udcdc '+lawName+'</div><div class="page-desc">'+items.length+'\u4ef6</div>'+linkHtml+'<div id="lawR"></div><div id="lawChatArea"></div>';
+    var linkHtml=egovLink?'<div style="margin-bottom:14px;padding:12px;background:var(--blue-pale);border-radius:var(--r);border:1px solid var(--blue-light)"><a href="'+egovLink+'" target="_blank" rel="noopener" style="color:var(--blue);font-size:13px;font-weight:600;text-decoration:none">\ud83d\udcdc '+lawName+'\u306e\u6700\u65b0\u6761\u6587\u3092\u898b\u308b\uff08e-Gov\u6cd5\u4ee4\u691c\u7d22\uff09 \u2197</a><div style="font-size:11px;color:var(--gray-500);margin-top:4px">\u203b\u6cd5\u4ee4\u306f\u6539\u6b63\u3055\u308c\u308b\u5834\u5408\u304c\u3042\u308a\u307e\u3059\u3002\u6700\u65b0\u306e\u6761\u6587\u306fe-Gov\u6cd5\u4ee4\u691c\u7d22\u3067\u78ba\u8a8d\u3057\u3066\u304f\u3060\u3055\u3044\u3002</div></div>':'';
+    mc.innerHTML='<div class="page-title">\ud83d\udcdc '+lawName+'</div><div class="page-desc">'+items.length+'\u4ef6</div>'+linkHtml+'<div id="lawR"></div>';
   } else {
     var otherLaws=['電気工事業法','電気用品安全法','労働安全衛生法'];
     for(var sc in lawData){var isMain=sc.indexOf('建設業法')>=0||sc.indexOf('建築基準法')>=0||sc.indexOf('消防法')>=0||sc.indexOf('電気事業法')>=0||sc.indexOf('電気工事士法')>=0;if(!isMain){lawData[sc].forEach(function(e){items.push({q:e.q,a:e.a,qd:e.qd,sc:sc});});}}
     var linksHtml='<div style="margin-bottom:14px;padding:12px;background:var(--blue-pale);border-radius:var(--r);border:1px solid var(--blue-light)"><div style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:8px">\ud83d\udcdc \u6700\u65b0\u6761\u6587\u3092\u78ba\u8a8d\uff08e-Gov\u6cd5\u4ee4\u691c\u7d22\uff09</div>';
     otherLaws.forEach(function(ln){var link=EGOV_LINKS[ln]||'';if(link)linksHtml+='<a href="'+link+'" target="_blank" rel="noopener" style="display:block;color:var(--blue);font-size:12px;margin-bottom:4px;text-decoration:none">'+ln+' \u2197</a>';});
     linksHtml+='<div style="font-size:11px;color:var(--gray-500);margin-top:6px">\u203b\u6700\u65b0\u306e\u6761\u6587\u306fe-Gov\u6cd5\u4ee4\u691c\u7d22\u3067\u78ba\u8a8d\u3057\u3066\u304f\u3060\u3055\u3044\u3002</div></div>';
-    mc.innerHTML='<div class="page-title">\ud83d\udcdc \u305d\u306e\u4ed6\u6cd5\u4ee4</div><div class="page-desc">\u96fb\u6c17\u5de5\u4e8b\u696d\u6cd5\u30fb\u96fb\u6c17\u7528\u54c1\u5b89\u5168\u6cd5\u30fb\u52b4\u50cd\u5b89\u5168\u885b\u751f\u6cd5 \u7b49\uff08'+items.length+'\u4ef6\uff09</div>'+linksHtml+'<div id="lawR"></div><div id="lawChatArea"></div>';
+    mc.innerHTML='<div class="page-title">\ud83d\udcdc \u305d\u306e\u4ed6\u6cd5\u4ee4</div><div class="page-desc">\u96fb\u6c17\u5de5\u4e8b\u696d\u6cd5\u30fb\u96fb\u6c17\u7528\u54c1\u5b89\u5168\u6cd5\u30fb\u52b4\u50cd\u5b89\u5168\u885b\u751f\u6cd5 \u7b49\uff08'+items.length+'\u4ef6\uff09</div>'+linksHtml+'<div id="lawR"></div>';
   }
-
-  if(items.length){
-    document.getElementById('lawR').innerHTML=items.map(function(it,i){
-      return '<div class="term-card" id="lw'+i+'"><div class="term-hd" onclick="document.getElementById(\'lw'+i+'\').classList.toggle(\'expanded\')"><div class="term-q">'+it.q+'</div><span class="term-arrow">\u25bc</span></div><div class="term-body"><div class="term-answer">'+it.a+'</div></div></div>';
-    }).join('');
-  } else {
-    document.getElementById('lawR').innerHTML='';
-  }
-
-  // Render AI chat
-  var chatHtml='<div class="law-chat">'+
-    '<div class="law-chat-header">\ud83e\udd16 \u6cd5\u4ee4AI\u30a2\u30b7\u30b9\u30bf\u30f3\u30c8</div>'+
-    '<div class="law-chat-disclaimer">\u26a0\ufe0f AI\u306e\u56de\u7b54\u306f\u53c2\u8003\u60c5\u5831\u3067\u3042\u308a\u3001\u6cd5\u7684\u52a9\u8a00\u3067\u306f\u3042\u308a\u307e\u305b\u3093\u3002\u91cd\u8981\u306a\u5224\u65ad\u306f\u5fc5\u305a\u5c02\u9580\u5bb6\uff08\u884c\u653f\u66f8\u58eb\u30fb\u5f01\u8b77\u58eb\u7b49\uff09\u306b\u3054\u78ba\u8a8d\u304f\u3060\u3055\u3044\u3002\u6700\u65b0\u306e\u6761\u6587\u3092Web\u691c\u7d22\u3057\u3066\u56de\u7b54\u3057\u307e\u3059\u304c\u3001\u6b63\u78ba\u6027\u3092\u4fdd\u8a3c\u3059\u308b\u3082\u306e\u3067\u306f\u3042\u308a\u307e\u305b\u3093\u3002</div>'+
-    '<div class="law-chat-messages" id="lawChatMsgs"></div>'+
-    '<div class="law-chat-input"><input type="text" id="lawChatInput" placeholder="\u4f8b\uff1a\u5efa\u8a2d\u696d\u306e\u8a31\u53ef\u8981\u4ef6\u306f\uff1f" onkeydown="if(event.key===\'Enter\')askLaw()" enterkeyhint="send"><button id="lawChatBtn" onclick="askLaw()">\u9001\u4fe1</button></div>'+
-  '</div>';
-  document.getElementById('lawChatArea').innerHTML=chatHtml;
-
-  // Restore chat history
-  if(!lawChatHistory[chatLawName])lawChatHistory[chatLawName]=[];
-  renderLawChatHistory(chatLawName);
-  // Store current law context
-  document.getElementById('lawChatInput').dataset.law=chatLawName;
-}
-
-function renderLawChatHistory(lawName){
-  var msgs=lawChatHistory[lawName]||[];
-  var el=document.getElementById('lawChatMsgs');
-  if(!msgs.length){
-    el.innerHTML='<div style="text-align:center;padding:20px;color:var(--gray-400);font-size:13px">\ud83d\udcac \u6cd5\u4ee4\u306b\u3064\u3044\u3066\u8cea\u554f\u3057\u3066\u304f\u3060\u3055\u3044</div>';
-    return;
-  }
-  el.innerHTML=msgs.map(function(m){
-    if(m.role==='user'){
-      return '<div class="law-msg law-msg-user"><div class="law-msg-bubble">'+escMsg(m.text)+'</div></div>';
-    } else {
-      return '<div class="law-msg law-msg-ai"><div class="law-msg-icon">\ud83e\udd16</div><div class="law-msg-bubble">'+escMsg(m.text)+'</div></div>';
-    }
+  if(!items.length){document.getElementById('lawR').innerHTML='<div class="no-results"><p>\u30c7\u30fc\u30bf\u6e96\u5099\u4e2d</p></div>';return;}
+  document.getElementById('lawR').innerHTML=items.map(function(it,i){
+    return '<div class="term-card" id="lw'+i+'"><div class="term-hd" onclick="document.getElementById(\'lw'+i+'\').classList.toggle(\'expanded\')"><div class="term-q">'+it.q+'</div><span class="term-arrow">\u25bc</span></div><div class="term-body"><div class="term-answer">'+it.a+'</div></div></div>';
   }).join('');
-  el.scrollTop=el.scrollHeight;
-}
-
-function escMsg(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
-
-
-// Settings page
-function renderSettingsPage(mc){
-  var currentKey=localStorage.getItem('anthropic_api_key')||'';
-  var masked=currentKey?currentKey.substring(0,10)+'...'+ currentKey.substring(currentKey.length-4):'';
-  mc.innerHTML='<div class="page-title">\u2699\ufe0f 設定</div><div class="page-desc">法令AIアシスタント機能の設定</div>'+
-  '<div class="settings-section">'+
-    '<div class="settings-label">Anthropic APIキー</div>'+
-    '<div class="settings-desc">法令AIアシスタント機能を使用するにはAPIキーが必要です。<br>'+
-    'APIキーはこの端末のブラウザにのみ保存され、外部サーバーには送信されません。</div>'+
-    '<div style="font-size:14px;font-weight:700;color:var(--blue);margin-bottom:8px">\u2b07\ufe0f \u4e0b\u306e\u6b04\u306bAPI\u30ad\u30fc\u3092\u8cbc\u308a\u4ed8\u3051\u3066\u304f\u3060\u3055\u3044</div>'+
-    '<input type="text" class="settings-input" id="apiKeyInput" placeholder="\u3053\u3053\u306b\u8cbc\u308a\u4ed8\u3051\uff08sk-ant-api03-...\uff09" value="'+(currentKey||'')+'">'+
-    '<div id="apiKeyStatus">'+(currentKey?'<div class="settings-status ok">\u2705 APIキーが設定されています（'+masked+'）</div>':'')+'</div>'+
-    '<button class="settings-save" onclick="saveApiKey()">保存</button>'+
-  '</div>'+
-  '<div class="settings-section">'+
-    '<div class="settings-label">APIキーの取得方法</div>'+
-    '<div class="settings-desc" style="line-height:2">'+
-      '<strong>1.</strong> <a href="https://console.anthropic.com/" target="_blank" style="color:var(--blue)">console.anthropic.com</a> にアクセス<br>'+
-      '<strong>2.</strong> Googleアカウント等でサインアップ（無料）<br>'+
-      '<strong>3.</strong> 左メニューの「API Keys」をクリック<br>'+
-      '<strong>4.</strong> 「Create Key」でキーを発行<br>'+
-      '<strong>5.</strong> 表示されたキー（sk-ant-...）をコピーして上の欄に貼り付け<br><br>'+
-      '\ud83d\udcb0 <strong>料金：</strong>従量課金制（1回の質問あたり約1〜5円）<br>'+
-      '\u26a0\ufe0f 初回登録時に$5分の無料クレジットが付与されます'+
-    '</div>'+
-  '</div>';
-}
-function saveApiKey(){
-  var key=document.getElementById('apiKeyInput').value.trim();
-  var status=document.getElementById('apiKeyStatus');
-  if(!key){
-    localStorage.removeItem('anthropic_api_key');
-    status.innerHTML='<div class="settings-status ng">\u274c APIキーが削除されました</div>';
-    return;
-  }
-  if(!key.startsWith('sk-')){
-    status.innerHTML='<div class="settings-status ng">\u274c APIキーの形式が正しくありません（sk-で始まる必要があります）</div>';
-    return;
-  }
-  localStorage.setItem('anthropic_api_key',key);
-  var masked=key.substring(0,10)+'...'+key.substring(key.length-4);
-  status.innerHTML='<div class="settings-status ok">\u2705 保存しました（'+masked+'）</div>';
-}
-
-function askLaw(){
-  var apiKey=localStorage.getItem('anthropic_api_key');
-  if(!apiKey){
-    var msgsEl=document.getElementById('lawChatMsgs');
-    lawChatHistory[document.getElementById('lawChatInput').dataset.law||'法令']=lawChatHistory[document.getElementById('lawChatInput').dataset.law||'法令']||[];
-    lawChatHistory[document.getElementById('lawChatInput').dataset.law||'法令'].push({role:'assistant',text:'\u26a0\ufe0f APIキーが設定されていません。\n\n左メニューの「\u2699\ufe0f 設定」からAnthropicのAPIキーを設定してください。'});
-    renderLawChatHistory(document.getElementById('lawChatInput').dataset.law||'法令');
-    return;
-  }
-
-  var input=document.getElementById('lawChatInput');
-  var btn=document.getElementById('lawChatBtn');
-  var question=input.value.trim();
-  if(!question)return;
-
-  var lawName=input.dataset.law||'法令';
-  if(!lawChatHistory[lawName])lawChatHistory[lawName]=[];
-
-  lawChatHistory[lawName].push({role:'user',text:question});
-  input.value='';
-  renderLawChatHistory(lawName);
-
-  var msgsEl=document.getElementById('lawChatMsgs');
-  msgsEl.innerHTML+='<div class="law-thinking" id="lawThinking"><div class="law-msg-icon" style="width:28px;height:28px;border-radius:50%;background:var(--blue-pale);display:flex;align-items:center;justify-content:center;font-size:14px">\ud83e\udd16</div><div class="law-thinking-dots"><span></span><span></span><span></span></div>\u6700\u65b0\u306e\u6761\u6587\u3092\u691c\u7d22\u4e2d...</div>';
-  msgsEl.scrollTop=msgsEl.scrollHeight;
-  btn.disabled=true;
-
-  var apiMessages=[];
-  lawChatHistory[lawName].forEach(function(m){
-    apiMessages.push({role:m.role==='user'?'user':'assistant',content:m.text});
-  });
-
-  fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'x-api-key':apiKey,
-      'anthropic-version':'2023-06-01',
-      'anthropic-dangerous-direct-browser-access':'true'
-    },
-    body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
-      max_tokens:1500,
-      system:'あなたは日本の電気工事業界に精通した法令アシスタントです。質問された法令（現在のコンテキスト：'+lawName+'）について、Web検索で最新の条文を確認し、分かりやすく回答してください。\n\n【重要なルール】\n・回答は日本語で行うこと\n・条文を引用する場合は条番号を明記すること\n・回答の最後に必ず「※この回答はAIによる参考情報です。正確な解釈は専門家にご確認ください。」と付けること\n・法改正の可能性がある場合はその旨を言及すること\n・電気工事・建設業の実務に即した具体的な説明を心がけること',
-      messages:apiMessages,
-      tools:[{type:'web_search_20250305',name:'web_search',max_uses:3}]
-    })
-  })
-  .then(function(res){
-    if(!res.ok){
-      return res.json().then(function(err){
-        throw new Error(err.error&&err.error.message?err.error.message:'API error ('+res.status+')');
-      });
-    }
-    return res.json();
-  })
-  .then(function(data){
-    var answer='';
-    if(data.content){
-      data.content.forEach(function(block){
-        if(block.type==='text'&&block.text)answer+=block.text;
-      });
-    }
-    if(!answer)answer='\u56de\u7b54\u3092\u53d6\u5f97\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305f\u3002';
-    lawChatHistory[lawName].push({role:'assistant',text:answer});
-    renderLawChatHistory(lawName);
-    btn.disabled=false;
-  })
-  .catch(function(err){
-    var errMsg=err.message||'\u4e0d\u660e\u306a\u30a8\u30e9\u30fc';
-    if(errMsg.indexOf('API key')>=0||errMsg.indexOf('401')>=0||errMsg.indexOf('authentication')>=0){
-      errMsg='APIキーが無効です。設定ページで正しいキーを入力してください。';
-    }
-    lawChatHistory[lawName].push({role:'assistant',text:'\u30a8\u30e9\u30fc: '+errMsg});
-    renderLawChatHistory(lawName);
-    btn.disabled=false;
-  });
-}
-
-function escMsg(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
-
-function askLaw(){
-  var input=document.getElementById('lawChatInput');
-  var btn=document.getElementById('lawChatBtn');
-  var question=input.value.trim();
-  if(!question)return;
-
-  var lawName=input.dataset.law||'法令';
-  if(!lawChatHistory[lawName])lawChatHistory[lawName]=[];
-
-  // Add user message
-  lawChatHistory[lawName].push({role:'user',text:question});
-  input.value='';
-  renderLawChatHistory(lawName);
-
-  // Show thinking indicator
-  var msgsEl=document.getElementById('lawChatMsgs');
-  msgsEl.innerHTML+='<div class="law-thinking" id="lawThinking"><div class="law-msg-icon" style="width:28px;height:28px;border-radius:50%;background:var(--blue-pale);display:flex;align-items:center;justify-content:center;font-size:14px">\ud83e\udd16</div><div class="law-thinking-dots"><span></span><span></span><span></span></div>\u6700\u65b0\u306e\u6761\u6587\u3092\u691c\u7d22\u4e2d...</div>';
-  msgsEl.scrollTop=msgsEl.scrollHeight;
-  btn.disabled=true;
-
-  // Build conversation history for API
-  var apiMessages=[];
-  lawChatHistory[lawName].forEach(function(m){
-    apiMessages.push({role:m.role==='user'?'user':'assistant',content:m.text});
-  });
-
-  // Call Claude API with web search
-  fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
-      max_tokens:1000,
-      system:'あなたは日本の電気工事業界に精通した法令アシスタントです。質問された法令（現在のコンテキスト：'+lawName+'）について、Web検索で最新の条文を確認し、分かりやすく回答してください。\n\n【重要なルール】\n・回答は日本語で行うこと\n・条文を引用する場合は条番号を明記すること\n・回答の最後に必ず「※この回答はAIによる参考情報です。正確な解釈は専門家にご確認ください。」と付けること\n・法改正の可能性がある場合はその旨を言及すること\n・電気工事・建設業の実務に即した具体的な説明を心がけること',
-      messages:apiMessages,
-      tools:[{type:'web_search_20250305',name:'web_search'}]
-    })
-  })
-  .then(function(res){return res.json();})
-  .then(function(data){
-    var answer='';
-    if(data.content){
-      data.content.forEach(function(block){
-        if(block.type==='text'&&block.text)answer+=block.text;
-      });
-    }
-    if(!answer)answer='\u56de\u7b54\u3092\u53d6\u5f97\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305f\u3002\u3082\u3046\u4e00\u5ea6\u304a\u8a66\u3057\u304f\u3060\u3055\u3044\u3002';
-    lawChatHistory[lawName].push({role:'assistant',text:answer});
-    renderLawChatHistory(lawName);
-    btn.disabled=false;
-  })
-  .catch(function(err){
-    lawChatHistory[lawName].push({role:'assistant',text:'\u30a8\u30e9\u30fc\u304c\u767a\u751f\u3057\u307e\u3057\u305f\u3002\u30a4\u30f3\u30bf\u30fc\u30cd\u30c3\u30c8\u63a5\u7d9a\u3092\u78ba\u8a8d\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\n\u30a8\u30e9\u30fc\u8a73\u7d30: '+err.message});
-    renderLawChatHistory(lawName);
-    btn.disabled=false;
-  });
 }
 
 // FAQ sub page (for 当社のこと)

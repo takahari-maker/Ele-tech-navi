@@ -1,11 +1,11 @@
 {
   "name": "なんでもまるわかりサイト",
   "short_name": "まるわかり",
-  "description": "旭日電気工業 社内ナレッジベース",
+  "description": "旭日電気工業 技術継承ナビ - 品質管理・用語・規程・法令をまるごと検索",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#1a2744",
-  "theme_color": "#1a2744",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
   "orientation": "any",
   "icons": [
     {
